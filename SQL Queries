@@ -1,0 +1,10 @@
+//install oracle , go to sql commands and create a table with following query.
+// To create table in oracle database particular query is used.
+CREATE TABLE customers(
+id number (10),
+name varchar(255),
+city varchar(255),
+phone number(10),
+gender varchar (10),
+checkbox varchar(5),
+);
