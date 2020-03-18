@@ -1,0 +1,74 @@
+package p1;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Home_page extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	String un = "system";
+	String pw ="system";
+	private Connection con;
+	@SuppressWarnings("unused")
+	private PreparedStatement pstmt;
+
+public void init()
+{
+	try {
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		System.out.println("Driver loaded");
+        }
+	catch (Exception e)
+	{
+		e.printStackTrace();	
+		System.out.println("Driver not loaded");
+	}
+	try
+	{
+	con =	DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "system");
+		System.out.println("Connected");
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		System.out.println("not connected");
+	}
+}
+@Override
+protected void service (HttpServletRequest req, HttpServletResponse res)
+{
+	try {
+		String s ="INSERT INTO customers VALUES(?,?,?,?,?,?)";
+		PreparedStatement pstmt = con.prepareStatement(s);
+		String id = req.getParameter("id");
+		String name  = req.getParameter("name");
+		String city = req.getParameter("city");
+		String phone = req.getParameter("phone");
+		String gender = req.getParameter("gender");
+		String checkbox = req.getParameter("checkbox");
+		pstmt.setString(1, id);
+		pstmt.setString(2, name);
+		pstmt.setString(3, city);
+		pstmt.setString(4, phone);
+		pstmt.setString(5, gender);
+		pstmt.setString(6, checkbox);
+		
+		pstmt.executeUpdate();
+		System.out.println("Updated the row");
+	}
+	catch (Exception e)
+	{
+		System.out.println("row not updated");
+		e.printStackTrace();
+	}
+}
+
+}
